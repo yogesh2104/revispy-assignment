@@ -58,6 +58,7 @@ export const LoginForm=()=>{
                         placeholder="Enter"
                         name="email"
                         required
+                        autoComplete="off"
                     />
                 </div>
                 <div>
@@ -70,6 +71,7 @@ export const LoginForm=()=>{
                         placeholder="Enter"
                         name="password"
                         required
+                        autoComplete="off"
                     />
                     <Button
                         type="button"

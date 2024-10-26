@@ -32,7 +32,7 @@ export const signUp = async (formData: FormData) => {
 
         // Generate a 8-digit random verification code
         const verificationCode = crypto.randomInt(10000000, 99999999).toString();
-        console.log("code",verificationCode)
+        console.log("verificationCode",verificationCode)
         const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiration
 
         // Store verification code in database

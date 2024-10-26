@@ -4,30 +4,21 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
 import { signUp } from "@/app/action/signup-action"
-import { useState } from "react"
+import { useState, useTransition } from "react"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
 
 
 const SignUpForm = ()=>{
     const router = useRouter()
-    const [isloading,setIsLoading] = useState(false)
+    const [isPending, startTransition] = useTransition();
 
     async function handleSubmit(formData: FormData) {
-        setIsLoading(true)
-        const result = await signUp(formData)
-        
-        if (result.error) {
-            toast.error(result.error)
-            return
-        }
-        setIsLoading(false)
-        
-        if (result.success) {
+        startTransition(async() => {
+            await signUp(formData)
             toast.success("Verification code sent to your email. Please check your inbox!")
             router.push("/verify")
-        }
-
+        })
     }
 
 
@@ -51,6 +42,7 @@ const SignUpForm = ()=>{
                     type="email"
                     placeholder="Enter"
                     name="email"
+                     autoComplete="off"
                     required
                 />
             </div>
@@ -62,10 +54,11 @@ const SignUpForm = ()=>{
                     placeholder="Enter"
                     name="password" 
                     required
+                    autoComplete="off"
                 />
             </div>
-            <Button type="submit" disabled={ isloading ? true : false } size={"lg"} className="w-full bg-black text-white">
-            {isloading ? <Loader2 className="animate-spin"/>:"CREATE ACCOUNT"} 
+            <Button type="submit" disabled={ isPending ? true : false } size={"lg"} className="w-full bg-black text-white">
+                {isPending ? <Loader2 className="animate-spin"/>:"CREATE ACCOUNT"} 
             </Button>
             </div>
         </form>
